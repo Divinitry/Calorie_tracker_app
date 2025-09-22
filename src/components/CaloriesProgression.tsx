@@ -19,12 +19,11 @@ const CaloriesProgression = () => {
           <AnimatedCircularProgress
             size={140}
             width={12}
-            backgroundWidth={14}
+            backgroundWidth={5}
             fill={percentage}
             tintColor="#6bfc9cff"
             onAnimationComplete={() => console.log('onAnimationComplete')}
-            backgroundColor="#c5c5c5ff"
-            arcSweepAngle={180}
+            backgroundColor="#ffffffff"
             rotation={270}
             lineCap="round"
           >
@@ -58,6 +57,7 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 16,
+    fontWeight: "600",
     color: "#000000ff",
     textAlign: "center",
   },

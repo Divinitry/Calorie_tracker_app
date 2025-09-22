@@ -11,7 +11,8 @@ export const AppColors = {
   success: "#4CAF50",
   warning: "#E53935",
 
-  lime_background: "#e7fbea",
+  lime_background: "#d2f5d7ff",
+  // lime_background: "#e7fbea",
 
   secondaryText: "#757575",
   onChip: "#FFFFFF",

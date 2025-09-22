@@ -7,7 +7,7 @@ const AppBar = () => {
 
     return(
         <SafeAreaView edges={['right','left','bottom']}>
-            <Appbar.Header>
+            <Appbar.Header style={{backgroundColor:"#f5f5f5ff"}}>
                 <Appbar.Action icon="cog" />
                 <Appbar.Content title={String(day)} />
                 <Appbar.Action icon="calendar" />

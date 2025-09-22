@@ -1,14 +1,15 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, Text } from "react-native"
+import { View } from "react-native"
 
 import CaloriesProgression from "../components/CaloriesProgression"
+import Macros from "../components/Macros"
 
 const HomePage = () => {
     return (
         <SafeAreaView edges={['right','left','bottom']}>
             <View>
-                <Text></Text>
                 <CaloriesProgression/>
+                <Macros/>
             </View>
         </SafeAreaView>
     )
