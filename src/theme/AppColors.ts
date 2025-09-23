@@ -1,19 +1,22 @@
-// colors.ts
 export const AppColors = {
-  carbs: "#FFB74D",
-  protein: "#64B5F6",
-  fats: "#F06292",
+  carbs: "#FF6B6B",
+  carbsBackground: "#ffe8e9", // FFECEC
+  protein: "#4A90E2",
+  proteinBackground: "#e0eeff", // EAF4FF
+  fats: "#FFD166",
+  fatsbackground: "#fef7d5", // FFF9E6
 
-  cutting: "#26A69A",
-  bulking: "#7E57C2",
-  maintenance: "#9CCC65",
+  headerGreen: "#27AE60",
+  lightGreen: "#2ECC71",
 
-  success: "#4CAF50",
-  warning: "#E53935",
+  cardBackgroundWhite: "#FFFFFF",
+  textDarkGrey: "#333333",
 
-  lime_background: "#d2f5d7ff",
-  // lime_background: "#e7fbea",
+  backgroundOffWhite: "#FAFAFA",
 
-  secondaryText: "#757575",
-  onChip: "#FFFFFF",
+  blue: "#2868ed",
+
+  progressBar: "#ee4643",
+
+  whiteText: "#FFFFFF",
 };

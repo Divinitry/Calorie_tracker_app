@@ -13,7 +13,7 @@ const CaloriesProgression = () => {
 
   return (
     <SafeAreaView edges={['right','left','bottom']}>
-      <Card mode="contained" style={[styles.card, {backgroundColor: colors.lime_background}]}>
+      <Card mode="contained" style={[styles.card, {backgroundColor: colors.cardBackgroundWhite}]}>
         <Card.Content style={styles.content}>
           <Text style={styles.calories}>Daily Calories</Text>
           <AnimatedCircularProgress
