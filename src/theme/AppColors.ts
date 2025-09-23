@@ -1,10 +1,10 @@
 export const AppColors = {
   carbs: "#FF6B6B",
-  carbsBackground: "#ffe8e9", // FFECEC
+  carbsBackground: "#ffe8e9",
   protein: "#4A90E2",
-  proteinBackground: "#e0eeff", // EAF4FF
-  fats: "#FFD166",
-  fatsbackground: "#fef7d5", // FFF9E6
+  proteinBackground: "#e0eeff",
+  fats: "#dd934dff",
+  fatsBackground: "#feeed5ff",
 
   headerGreen: "#27AE60",
   lightGreen: "#2ECC71",

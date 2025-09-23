@@ -1,33 +1,45 @@
 import { View, StyleSheet } from "react-native"
-import { Card, Text } from "react-native-paper"
-import MacroTitle from "./MacroTitle"
+import { AppColors } from "../theme/AppColors"
 
+import MacroBox from "./MacroBox"
 
 const Macros = () => {
+  const colors = AppColors
+
+  const macros = [
+    {
+      name: "Protein",
+      currentAmount: 120,
+      goalAmount: 200,
+      color: colors.protein,
+      backgroundColor : colors.proteinBackground,
+      progressAmount: 120 / 200,
+    },
+    {
+      name: "Carbs",
+      currentAmount: 200,
+      goalAmount: 250,
+      color: colors.carbs,
+      backgroundColor : colors.carbsBackground,
+      progressAmount: 200 / 250,
+    },
+    {
+      name: "Fats",
+      currentAmount: 120,
+      goalAmount: 160,
+      color: colors.fats,
+      backgroundColor : colors.fatsBackground,
+      progressAmount: 120 / 160,
+    }
+  ]
+
   return (
     <View>
-      <MacroTitle/>
       <View style={styles.container}>
-        <Card mode="contained" style={[styles.card, { backgroundColor: "#c3e1faff" }]}>
-          <Card.Content>
-            <Text style={styles.macroTitle} variant="titleMedium">Protein</Text>
-            <Text style={styles.macroInfo} variant="headlineSmall">120g</Text>
-          </Card.Content>
-        </Card>
-
-        <Card mode="contained" style={[styles.card, { backgroundColor: "#fcddaeff" }]}>
-          <Card.Content>
-            <Text style={styles.macroTitle} variant="titleMedium">Carbs</Text>
-            <Text style={styles.macroInfo} variant="headlineSmall">250g</Text>
-          </Card.Content>
-        </Card>
-
-        <Card mode="contained" style={[styles.card, { backgroundColor: "#fcc9daff" }]}>
-          <Card.Content>
-            <Text style={styles.macroTitle} variant="titleMedium">Fats</Text>
-            <Text style={styles.macroInfo} variant="headlineSmall">70g</Text>
-          </Card.Content>
-        </Card>
+        {macros.map((macro, index) => (
+          <MacroBox key={index} macro={macro}/>
+        )
+        )}
       </View>
     </View>
   )
@@ -39,19 +51,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 8,
   },
-  card: {
-    flex: 1,
-    marginHorizontal: 4,
-    borderRadius: 16,
-  },
-  macroTitle: {
-    fontWeight: "800",
-    textAlign: "center"
-  },
-  macroInfo: {
-    fontWeight: "300",
-    textAlign: "center"
-  }
 })
 
 export default Macros
