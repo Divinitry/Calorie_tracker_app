@@ -19,4 +19,6 @@ export const AppColors = {
   progressBar: "#ee4643",
 
   whiteText: "#FFFFFF",
+
+  gold: "#e6ad03ff"
 };

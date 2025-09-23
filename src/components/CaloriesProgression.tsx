@@ -1,38 +1,58 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { Text, StyleSheet } from "react-native"
+import { Text, StyleSheet, View } from "react-native"
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Card } from 'react-native-paper'
 import { AppColors } from "../theme/AppColors"
+import { FontAwesome5 } from "@expo/vector-icons"
+import CaloricDisplay from "./CaloricDisplay"
 
 const CaloriesProgression = () => {
   const colors = AppColors
-
   const daily_calories: number = 2000
-  const calories_consumed: number = 700
+  const calories_consumed: number = 1200
   const percentage = (calories_consumed / daily_calories) * 100
+  const calorieInfo = { daily_calories: daily_calories, calories_consumed: calories_consumed }
+
+  const weightLbs: number = 160
+  const weightKg: number = Math.round(weightLbs * 0.45359237)
 
   return (
-    <SafeAreaView edges={['right','left','bottom']}>
-      <Card mode="contained" style={[styles.card, {backgroundColor: colors.cardBackgroundWhite}]}>
+    <SafeAreaView edges={['right', 'left']}>
+      <Card mode="elevated" style={[styles.card, { backgroundColor: colors.cardBackgroundWhite }]}>
         <Card.Content style={styles.content}>
-          <Text style={styles.calories}>Daily Calories</Text>
-          <AnimatedCircularProgress
-            size={140}
-            width={12}
-            backgroundWidth={5}
-            fill={percentage}
-            tintColor="#6bfc9cff"
-            onAnimationComplete={() => console.log('onAnimationComplete')}
-            backgroundColor="#ffffffff"
-            rotation={270}
-            lineCap="round"
-          >
-            {(fill: number) => (
-              <Text style={styles.progressText}>
-                {`${Math.round(calories_consumed)}`} / 2000
-              </Text>
-            )}
-          </AnimatedCircularProgress>
+          <View style={styles.row}>
+
+            <View style={[styles.column, { alignItems: 'flex-start', marginLeft: 15 }]}>
+              <Text style={styles.calories}>Daily Calories</Text>
+
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                <FontAwesome5 name="balance-scale-right" size={15} color={colors.gold} />
+                <Text style={{ marginLeft: 6 }}>
+                  {weightKg} kg <Text style={{ marginHorizontal: 4 }}>•</Text> {weightLbs} lbs
+                </Text>
+              </View>
+            </View>
+
+            <View style={[styles.column, { alignItems: 'flex-end' }]}>
+              <AnimatedCircularProgress
+                size={90}
+                width={8}
+                backgroundWidth={8}
+                rotation={0}
+                fill={percentage}
+                tintColor={colors.progressBar}
+                onAnimationComplete={() => console.log('onAnimationComplete')}
+                backgroundColor="#f7f7f7ff"
+                lineCap="round"
+                style={{ marginRight: 10 }}
+              >
+                {(fill: number) => (
+                  <Text style={styles.progressText}>{`${percentage.toFixed(0)}%`}</Text>
+                )}
+              </AnimatedCircularProgress>
+            </View>
+          </View>
+          <CaloricDisplay calorieInfo={calorieInfo} />
         </Card.Content>
       </Card>
     </SafeAreaView>
@@ -45,15 +65,28 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   content: {
-    alignItems: "center",
-    justifyContent: "center",
     padding: 20,
   },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  column: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   calories: {
-    textAlign: "center",
-    fontSize: 22,
+    fontSize: 25,
+    fontWeight: "600",
     color: "#000000ff",
-    marginBottom: 15,
+    textAlign: 'left',
+    marginBottom: 5,
+  },
+  number: {
+    fontSize: 18,
+    color: "#000000ff",
+    textAlign: 'left',
   },
   progressText: {
     fontSize: 16,

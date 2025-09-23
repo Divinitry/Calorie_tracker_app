@@ -10,7 +10,7 @@ const AppBar = () => {
   const day = current_time.toLocaleDateString()
 
   return (
-    <SafeAreaView edges={["right", "left", "bottom"]}>
+    <SafeAreaView edges={["right", "left"]}>
       <Appbar.Header
         style={{
           backgroundColor: colors.headerGreen,
