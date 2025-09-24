@@ -4,6 +4,7 @@ import NavBar from "./src/components/NavBar";
 import HomePage from './src/pages/HomePage';
 import AppBar from './src/components/AppBar';
 import { AppColors } from './src/theme/AppColors';
+import { ScrollView } from 'react-native';
 
 export default function App() {
   const colors = AppColors
@@ -11,9 +12,11 @@ export default function App() {
     <PaperProvider>
       <SafeAreaProvider >
         <SafeAreaView style={{flex: 1, backgroundColor: colors.backgroundOffWhite}} edges={['right','left','bottom']}>
-          <AppBar />
-          <HomePage />
-          <NavBar />
+          <AppBar/>
+          <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <HomePage/>
+          </ScrollView>
+          <NavBar/>
         </SafeAreaView>
       </SafeAreaProvider>
     </PaperProvider>

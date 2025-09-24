@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native"
 import AddFoodButton from "./AddFoodButton"
+import addCommas from "../../helpers/addCommas"
 
 interface calorieInfoProps {
     calorieInfo: {
@@ -10,22 +11,6 @@ interface calorieInfoProps {
 
 const CaloricDisplay = ({calorieInfo} : calorieInfoProps) => {
     const { daily_calories, calories_consumed } = calorieInfo
-
-    const addCommas = (num: number | string): string => {
-        const str = num.toString()
-        let result = ''
-        let count = 0
-
-        for (let i = str.length - 1; i >= 0; i--) {
-            result = str[i] + result
-            count++
-            if (count % 3 === 0 && i !== 0) {
-                result = ',' + result
-            }
-        }
-
-        return result
-    }
 
     return(
         <View style={styles.container}>

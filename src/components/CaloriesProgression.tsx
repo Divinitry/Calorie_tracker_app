@@ -18,7 +18,7 @@ const CaloriesProgression = () => {
 
   return (
     <SafeAreaView edges={['right', 'left']}>
-      <Card mode="elevated" style={[styles.card, { backgroundColor: colors.cardBackgroundWhite }]}>
+      <Card mode="elevated" style={[styles.card, { backgroundColor: colors.cardBackgroundWhite, shadowOpacity: 0 }]}>
         <Card.Content style={styles.content}>
           <View style={styles.row}>
 
@@ -41,7 +41,6 @@ const CaloriesProgression = () => {
                 rotation={0}
                 fill={percentage}
                 tintColor={colors.progressBar}
-                onAnimationComplete={() => console.log('onAnimationComplete')}
                 backgroundColor="#f7f7f7ff"
                 lineCap="round"
                 style={{ marginRight: 10 }}
