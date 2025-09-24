@@ -39,3 +39,8 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+outline_and_ideas.txt
+user_flow.txt
+
+server/.env
