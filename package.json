@@ -7,8 +7,7 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web",
-    "server": "npx ts-node server/index.ts"
+    "web": "expo start --web"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
@@ -32,5 +31,17 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Divinitry/Calorie_tracker_app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Divinitry/Calorie_tracker_app/issues"
+  },
+  "homepage": "https://github.com/Divinitry/Calorie_tracker_app#readme"
 }

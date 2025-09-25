@@ -1,9 +1,19 @@
-import { createUser } from './controllers/user.ts';
 import express from 'express';
+import createUser from './controllers/user.ts';
+import createRecipe from './controllers/recipe.ts';
+import { connectDB } from './config/db.ts';
 const app = express();
 const port = 3000;
 
+connectDB()
+
+app.use(express.json());
+
 app.post('/user/createuser', createUser)
+app.post('/recipes/createrecipe', createRecipe)
+app.get('/', (req, res) => {
+  res.json({hello: "world"})
+})
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}: http://localhost:3000/`);
