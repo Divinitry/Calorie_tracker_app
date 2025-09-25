@@ -1,12 +1,21 @@
-import { Request, Response } from 'express'
-const express = require('express')
-const app = express()
-const port = 3000
+import { createUser } from './controllers/user';
+import express from 'express';
+const app = express();
+const port = 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!')
-})
+/* 
+Think of routes as “endpoints” that your app exposes to the outside world (the frontend or other clients).
+
+They define which URL triggers which action.
+
+Example:
+
+app.get('/users', getAllUsers);
+app.post('/users', createUser);
+*/
+
+app.get('/user/createuser', createUser)
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Server running on port ${port}: http://localhost:3000/`);
+});

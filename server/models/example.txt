@@ -1,0 +1,23 @@
+/*
+Models define how data is structured in the database.
+
+In MongoDB, this is usually a schema using Mongoose:
+
+import { Schema, model } from 'mongoose';
+
+const userSchema = new Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+});
+
+export const User = model('User', userSchema);
+
+
+You use the model in controllers to fetch/save data:
+
+const createUser = async (req, res) => {
+  const newUser = new User(req.body);
+  await newUser.save();
+  res.status(201).json(newUser);
+};
+*/

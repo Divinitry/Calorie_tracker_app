@@ -1,0 +1,23 @@
+/*
+Middleware is a function that runs between the request and the controller.
+
+It can:
+
+Authenticate users (check JWT)
+
+Log requests
+
+Attach data to req (e.g., req.user)
+
+Validate input
+
+Example:
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization;
+  if (!token) return res.status(401).json({ message: 'No token' });
+  req.user = decodeToken(token); // attach data to request
+  next(); // pass control to the next middleware or controller
+};
+
+app.get('/protected', authMiddleware, getProtectedData);
+*/

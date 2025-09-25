@@ -1,0 +1,19 @@
+/*
+Controllers contain the logic for a route. They answer the question: “What happens when someone hits this endpoint?”
+
+Keeps routes clean by separating logic.
+Example:
+
+// controller
+export const getAllUsers = (req, res) => {
+  // fetch users from database
+  res.json(users);
+};
+
+export const createUser = (req, res) => {
+  const { name } = req.body;
+  // save user to database
+  res.status(201).json({ id: 1, name });
+};
+
+*/
