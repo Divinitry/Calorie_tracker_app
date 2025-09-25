@@ -1,5 +1,5 @@
 import pkg from 'express';
-import recipeSchema from '../models/recipeSchema';
+import recipeSchema from '../models/recipeSchema.ts';
 
 const createRecipe = async (req: pkg.Request, res: pkg.Response) => {
     try {
