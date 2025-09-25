@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
+import pkg from 'express';
 
-export const createUser = (req: Request, res: Response) => {
+export const createUser = (req: pkg.Request, res: pkg.Response) => {
     
 }

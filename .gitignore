@@ -43,4 +43,4 @@ yarn-error.*
 outline_and_ideas.txt
 user_flow.txt
 
-server/.env
+.env

@@ -5,6 +5,7 @@ import HomePage from './src/pages/HomePage';
 import AppBar from './src/components/AppBar';
 import { AppColors } from './src/theme/AppColors';
 import { ScrollView } from 'react-native';
+require('dotenv').config()
 
 export default function App() {
   const colors = AppColors
