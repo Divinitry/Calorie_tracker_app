@@ -5,7 +5,10 @@ export interface Field {
   label: string
   type: FieldType
   required?: boolean
-  max?: number
+  picker?: boolean
+  pickerOptions?: string[]
+  icon?: string
+  unit?: string
 }
 
 export interface CurrentStep {
@@ -14,38 +17,46 @@ export interface CurrentStep {
   fields: Field[]
 }
 
+const generateRange = (start: number, end: number): string[] => {
+  const arr: string[] = [];
+  for (let i = start; i <= end; i++) {
+    arr.push(String(i));
+  }
+  return arr;
+};
+
 export const signupSteps: CurrentStep[] = [
   {
     step: 1,
     title: "Account Info",
     fields: [
-      { name: "username", label: "Username", type: "text", required: true },
-      { name: "password", label: "Password", type: "password", required: true },
+      { name: "username", label: "Username", type: "text", required: true},
+      { name: "password", label: "Password", type: "password", required: true},
     ],
   },
   {
     step: 2,
     title: "Personal Info",
     fields: [
-      { name: "age", label: "Age", type: "number", max: 100 },
-      { name: "currentWeightKg", label: "Current Weight (kg)", type: "number"},
-      { name: "heightInCm", label: "Height (cm)", type: "number"},
+      { name: "age", label: "Age", type: "number", picker: true, pickerOptions: generateRange(1, 100), icon: "birthday-cake"},
+      { name: "heightInCm", label: "Height", type: "number", unit: "cm", picker: true, pickerOptions: generateRange(140, 220), icon: "ruler-vertical"},
+      { name: "currentWeightLbs", label: "Weight", type: "number", unit: "lbs", picker: true, pickerOptions: generateRange(50, 500), icon: "weight"},
     ],
   },
   {
     step: 3,
     title: "Daily Goals",
     fields: [
-      { name: "caloriesGoal", label: "Calories Goal", type: "number", max: 10000 },
-      { name: "stepGoal", label: "Steps Goal", type: "number"},
-      { name: "proteinGoal", label: "Protein Goal (g)", type: "number"},
-      { name: "fatGoal", label: "Fat Goal (g)", type: "number"},
-      { name: "carbGoal", label: "Carb Goal (g)", type: "number"},
+      { name: "caloriesGoal", label: "Calories", type: "number"},
+      { name: "stepGoal", label: "Steps", type: "number"},
+      { name: "proteinGoal", label: "Protein (g)", type: "number"},
+      { name: "fatGoal", label: "Fats (g)", type: "number"},
+      { name: "carbGoal", label: "Carbs (g)", type: "number"},
     ],
   },
   {
     step: 4,
-    title: "Confirm & Finish",
+    title: "Ready to start?",
     fields: [
       { name: "review", label: "Review your info", type: "review" },
     ],

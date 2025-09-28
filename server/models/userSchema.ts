@@ -26,7 +26,7 @@ const userSchema = new Schema({
     },
 
     stats: {
-    currentWeightKg: { type: Number, min: 1 },
+    currentWeightLbs: { type: Number, min: 1 },
     heightInCm: { type: Number, min: 1 },
     },
 
