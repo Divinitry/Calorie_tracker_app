@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import foodLogSchema from './foodLogSchema.ts';
-import recipeSchema from './recipeSchema.ts';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({

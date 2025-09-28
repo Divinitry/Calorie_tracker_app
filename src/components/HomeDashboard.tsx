@@ -1,10 +1,9 @@
 import { SafeAreaView } from "react-native-safe-area-context"
+import CaloriesProgression from "./CaloriesProgression.tsx"
+import Macros from "./Macros.tsx"
+import StepsToday from "./StepsToday.tsx"
 
-import CaloriesProgression from "../components/CaloriesProgression"
-import Macros from "../components/Macros"
-import StepsToday from "../components/StepsToday"
-
-const HomePage = () => {
+const HomeDashboard = () => {
     return (
         <SafeAreaView edges={['right','left','bottom']} style={{paddingBottom: 20}}>
             <CaloriesProgression/>
@@ -14,4 +13,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage
+export default HomeDashboard

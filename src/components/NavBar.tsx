@@ -1,6 +1,6 @@
 import { View, StyleSheet, Dimensions } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { AntDesign } from '@expo/vector-icons';
+import { Link } from 'expo-router'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -9,7 +9,10 @@ const NavBar = () => {
       <View style={styles.container}>
         <AntDesign name="home" size={28} color="gray" />
         <AntDesign name="plus" size={28} color="gray" />
-        <AntDesign name="user" size={28} color="gray" />
+        <Link href="/login_signup/authscreen">
+          <AntDesign name="user" size={28} color="gray" />
+        </Link>
+
       </View>
   )
 }
