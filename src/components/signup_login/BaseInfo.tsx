@@ -12,9 +12,10 @@ const colors = AppColors
 
 const BaseInfo = () => {
     const [currentAmount, SetCurrentAmount] = useState(0)
-    const [formData, SetFormData] = useState<{ [key: string]: any }>({age: 25, heightInCm: 170, currentWeightLbs: 150})
-    const steps = signupSteps.length
+    const [formData, SetFormData] = useState<{ [key: string]: any }>({ age: 25, heightInCm: 170, currentWeightLbs: 150 })
+    const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
 
+    const steps = signupSteps.length
     const currentSignUpStep = signupSteps[currentAmount]
 
     const stepHandler = (direction: string) => {
@@ -24,11 +25,28 @@ const BaseInfo = () => {
                     SetCurrentAmount((prev) => prev - 1)
                 }
                 break
+
             case "next":
-                if (currentAmount < signupSteps.length - 1) {
-                    SetCurrentAmount((prev) => prev + 1)
-                } else {
-                    handleSubmit()
+                let hasError = false
+                const newErrors: { [key: string]: boolean } = {}
+
+                currentSignUpStep.fields.forEach((field) => {
+                    if (field.required && (!formData[field.name] && formData[field.name] !== 0)) {
+                        newErrors[field.name] = true
+                        hasError = true
+                    } else {
+                        newErrors[field.name] = false
+                    }
+                })
+
+                setErrors(newErrors)
+
+                if (!hasError) {
+                    if (currentAmount < signupSteps.length - 1) {
+                        SetCurrentAmount((prev) => prev + 1)
+                    } else {
+                        handleSubmit()
+                    }
                 }
                 break
         }
@@ -45,9 +63,9 @@ const BaseInfo = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Appbar.Header style={styles.header} statusBarHeight={20}>
-                <Appbar.BackAction 
-                    onPress={() => stepHandler("prev")} 
-                    disabled={currentAmount === 0} 
+                <Appbar.BackAction
+                    onPress={() => stepHandler("prev")}
+                    disabled={currentAmount === 0}
                 />
 
                 <View style={styles.chipWrapper}>
@@ -62,8 +80,7 @@ const BaseInfo = () => {
                                     marginRight: i === steps - 1 ? spacing : spacing / 2,
                                 },
                             ]}
-                        >
-                        </View>
+                        />
                     ))}
                 </View>
             </Appbar.Header>
@@ -76,6 +93,8 @@ const BaseInfo = () => {
                     currentSignUpStep={currentSignUpStep}
                     SetFormData={SetFormData}
                     formData={formData}
+                    errors={errors}
+                    setErrors={setErrors}
                 />
             </ScrollView>
 
@@ -84,6 +103,8 @@ const BaseInfo = () => {
                     mode="contained"
                     onPress={() => stepHandler("next")}
                     style={styles.button}
+                    contentStyle={{ height: 60 }}
+                    labelStyle={{ fontSize: 20 }}
                 >
                     {currentAmount === signupSteps.length - 1 ? "Submit" : "Next"}
                 </Button>
