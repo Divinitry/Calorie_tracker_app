@@ -10,7 +10,7 @@ import Constants from "expo-constants"
 
 const { width: screenWidth } = Dimensions.get("window")
 const colors = AppColors
-import { DB_BASE_URL } from "../../../helpers/constants.js"
+import { DB_BASE_URL } from "../../../helpers/constants.ts"
 
 const BaseInfo = () => {
     const [currentAmount, SetCurrentAmount] = useState(0)

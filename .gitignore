@@ -45,4 +45,4 @@ user_flow.txt
 
 *.env
 
-src/helpers/constants.ts
+helpers/constants.ts
