@@ -24,9 +24,8 @@ interface Field {
   max?: number;
   unit?: string;
   placeholder?: string;
-  error?: boolean;
-  finalStep?: boolean
-  inputType?: string
+  finalStep?: boolean;
+  inputType?: string;
 }
 
 interface CurrentStep {
@@ -39,8 +38,8 @@ interface InfoFormProps {
   currentSignUpStep: CurrentStep;
   formData: { [key: string]: any };
   SetFormData: React.Dispatch<React.SetStateAction<{ [key: string]: any }>>;
-  errors: { [key: string]: boolean };
-  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: boolean }>>;
+  errors: { [key: string]: string[] };
+  setErrors: React.Dispatch<React.SetStateAction<{ [key: string]: string[] }>>;
 }
 
 const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors }: InfoFormProps) => {
@@ -61,7 +60,6 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
         ...prev,
         [currentPicker.name]: tempValue ?? prev[currentPicker.name] ?? "",
       }));
-      currentPicker.error = false;
     }
     setModalVisible(false);
     setCurrentPicker(null);
@@ -88,7 +86,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
               <TouchableOpacity
                 style={[
                   styles.pickerButton,
-                  field.error && { borderColor: "red" },
+                  errors[field.name]?.length > 0 && { borderColor: "red" },
                 ]}
                 onPress={() => openPicker(field)}
               >
@@ -113,7 +111,9 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
                 </View>
                 <FontAwesome5 name="arrow-down" size={20} color={AppColors.headerGreen} />
               </TouchableOpacity>
-              {field.error && <Text style={{ color: "red", marginTop: 2 }}>This field is required</Text>}
+              {errors[field.name]?.map((err, i) => (
+                <Text key={i} style={{ color: "red", marginTop: 2 }}>{err}</Text>
+              ))}
             </View>
           );
         }
@@ -186,13 +186,14 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
             </View>
           )
         }
+
         return (
           <View key={key} style={{ marginBottom: 8 }}>
             <Text style={styles.fieldLabel}>{field.label}</Text>
             <TextInput
               mode="outlined"
               keyboardType={field.inputType === "number" ? "numeric" : "default"}
-              outlineColor={errors[field.name] ? "red" : "#ccc"}
+              outlineColor={errors[field.name]?.length > 0 ? "red" : "#ccc"}
               activeOutlineColor={AppColors.headerGreen}
               theme={{ roundness: 8 }}
               value={String(value)}
@@ -201,8 +202,12 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
                   ...prev,
                   [field.name]: text,
                 }));
-                if (text) {
-                  setErrors((prev) => ({ ...prev, [field.name]: false }));
+
+                if (errors[field.name]?.length) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    [field.name]: [],
+                  }));
                 }
               }}
               secureTextEntry={secureTextEntry}
@@ -211,9 +216,9 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
               placeholderTextColor="#888"
               style={[styles.input, { fontSize: 16, height: 45 }]}
             />
-            {errors[field.name] && (
-              <Text style={{ color: "red", marginTop: 2 }}>This field is required</Text>
-            )}
+            {errors[field.name]?.map((err, i) => (
+              <Text key={i} style={{ color: "red", marginTop: 2 }}>{err}</Text>
+            ))}
           </View>
         );
       })}

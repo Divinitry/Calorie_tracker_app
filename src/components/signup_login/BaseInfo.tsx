@@ -1,26 +1,25 @@
 import { useState } from "react"
 import { View, StyleSheet, ScrollView, Dimensions } from "react-native"
-import { Button } from "react-native-paper"
+import { Button, Appbar } from "react-native-paper"
 import { AppColors } from "../../theme/AppColors"
 import { signupSteps } from "../../../helpers/signupSteps.ts"
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Appbar } from "react-native-paper"
+import { validatePassword } from '../../../helpers/validatePassword.ts'
+import { DB_BASE_URL } from "../../../helpers/constants.ts"
 import InfoForm from "./InfoForm.tsx"
-import Constants from "expo-constants"
 
 const { width: screenWidth } = Dimensions.get("window")
 const colors = AppColors
-import { DB_BASE_URL } from "../../../helpers/constants.ts"
 
 const BaseInfo = () => {
     const [currentAmount, SetCurrentAmount] = useState(0)
     const [formData, SetFormData] = useState<{ [key: string]: any }>({ age: 25, heightInCm: 170, currentWeightLbs: 150 })
-    const [errors, setErrors] = useState<{ [key: string]: boolean }>({})
+    const [errors, setErrors] = useState<{ [key: string]: string[] }>({})
 
     const steps = signupSteps.length
     const currentSignUpStep = signupSteps[currentAmount]
 
-    const stepHandler = (direction: string) => {
+    const stepHandler = async (direction: string) => {
         switch (direction) {
             case "prev":
                 if (currentAmount > 0) {
@@ -29,28 +28,58 @@ const BaseInfo = () => {
                 break
 
             case "next":
-                let hasError = false
-                const newErrors: { [key: string]: boolean } = {}
+                let newErrors: { [key: string]: string[] } = {};
+                let hasError = false;
 
                 currentSignUpStep.fields.forEach((field) => {
                     if (field.required && (!formData[field.name] && formData[field.name] !== 0)) {
-                        newErrors[field.name] = true
-                        hasError = true
+                        newErrors[field.name] = ["This field is required"];
+                        hasError = true;
                     } else {
-                        newErrors[field.name] = false
+                        newErrors[field.name] = [];
                     }
-                })
+                });
 
-                setErrors(newErrors)
-
-                if (!hasError) {
-                    if (currentAmount < signupSteps.length - 1) {
-                        SetCurrentAmount((prev) => prev + 1)
-                    } else {
-                        handleSubmit()
+                const passwordField = currentSignUpStep.fields.find(f => f.name === "password");
+                if (passwordField) {
+                    const passwordErrors = validatePassword(formData[passwordField.name] || "");
+                    if (passwordErrors.length > 0) {
+                        newErrors[passwordField.name] = passwordErrors;
+                        hasError = true;
                     }
                 }
-                break
+
+                const usernameField = currentSignUpStep.fields.find(f => f.name === "username");
+                if (usernameField) {
+                    const typedUsername = formData[usernameField.name];
+
+                    if (typedUsername?.trim() !== "") {
+                        try {
+                            const res = await fetch(`${DB_BASE_URL}/users/${typedUsername}`);
+                            if (res.ok) {
+                                const data = await res.json();
+                                if (!data.available) {
+                                    newErrors[usernameField.name] = ["Username already taken"];
+                                    hasError = true;
+                                }
+                            } else {
+                                console.log("Username check response not ok:", res.status);
+                            }
+                        } catch (error) {
+                            console.log("Error checking username:", error);
+                        }
+                    }
+                }
+
+                setErrors(newErrors);
+                if (hasError) return;
+
+                if (currentAmount < signupSteps.length - 1) {
+                    SetCurrentAmount((prev) => prev + 1);
+                } else {
+                    handleSubmit();
+                }
+                break;
         }
     }
 
