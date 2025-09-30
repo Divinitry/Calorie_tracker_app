@@ -6,9 +6,11 @@ import { signupSteps } from "../../../helpers/signupSteps.ts"
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Appbar } from "react-native-paper"
 import InfoForm from "./InfoForm.tsx"
+import Constants from "expo-constants"
 
 const { width: screenWidth } = Dimensions.get("window")
 const colors = AppColors
+import { DB_BASE_URL } from "../../../helpers/constants.js"
 
 const BaseInfo = () => {
     const [currentAmount, SetCurrentAmount] = useState(0)
@@ -52,9 +54,25 @@ const BaseInfo = () => {
         }
     }
 
-    const handleSubmit = () => {
-        console.log(formData)
-    }
+    const handleSubmit = async () => {
+        try {
+            console.log(DB_BASE_URL)
+            const response = await fetch(`${DB_BASE_URL}/users/createuser`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            console.log("Backend response:", result);
+        } catch (error) {
+            console.log("Fetch error:", error);
+        }
+    };
 
     const stepWidth = 75
     const totalStepWidth = steps * stepWidth

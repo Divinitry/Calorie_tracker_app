@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
-import { TextInput } from "react-native-paper";
+import { TextInput, List, Divider, IconButton } from "react-native-paper";
 import { AppColors } from "../../theme/AppColors";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Picker } from '@react-native-picker/picker';
@@ -25,6 +25,8 @@ interface Field {
   unit?: string;
   placeholder?: string;
   error?: boolean;
+  finalStep?: boolean
+  inputType?: string
 }
 
 interface CurrentStep {
@@ -45,6 +47,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
   const [modalVisible, setModalVisible] = useState(false);
   const [currentPicker, setCurrentPicker] = useState<Field | null>(null);
   const [tempValue, setTempValue] = useState<number | undefined>(undefined);
+  const [showPassword, setShowPassword] = useState(false);
 
   const openPicker = (field: Field) => {
     setCurrentPicker(field);
@@ -63,6 +66,11 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
     setModalVisible(false);
     setCurrentPicker(null);
     setTempValue(undefined);
+  };
+
+  const formatMacro = (value?: string | number, unit?: string) => {
+    if (!value) return "Not set";
+    return unit ? `${value} ${unit}` : String(value);
   };
 
   return (
@@ -110,11 +118,80 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
           );
         }
 
+        if (field.finalStep) {
+          return (
+            <View style={{ marginBottom: -80 }} key={key}>
+              <List.Section title="Review Your Info">
+                <List.Subheader>Account Info</List.Subheader>
+                <List.Item
+                  title="Username"
+                  description={formData.username || "Not set"}
+                  left={props => <List.Icon {...props} icon="account" />}
+                />
+                <List.Item
+                  title="Password"
+                  description={showPassword ? formData.password : "••••••••"}
+                  left={props => <List.Icon {...props} icon="lock" />}
+                  right={() => (
+                    <IconButton
+                      icon={showPassword ? "eye-off" : "eye"}
+                      onPress={() => setShowPassword(!showPassword)}
+                    />
+                  )}
+                />
+
+                <Divider />
+
+                <List.Subheader>Personal Info</List.Subheader>
+                <List.Item
+                  title="Age"
+                  description={formData.age || "Not set"}
+                  left={props => <List.Icon {...props} icon="cake-variant" />}
+                />
+                <List.Item
+                  title="Height"
+                  description={formData.heightInCm ? `${formData.heightInCm} cm` : "Not set"}
+                  left={props => <List.Icon {...props} icon="human-male-height" />}
+                />
+                <List.Item
+                  title="Weight"
+                  description={formData.currentWeightLbs ? `${formData.currentWeightLbs} lbs` : "Not set"}
+                  left={props => <List.Icon {...props} icon="weight" />}
+                />
+
+                <Divider />
+
+                <List.Subheader>Daily Goals</List.Subheader>
+                <List.Item
+                  title="Calories"
+                  description={formatMacro(formData.caloriesGoal, "kcal")}
+                  left={props => <List.Icon {...props} icon="fire" />}
+                />
+                <List.Item
+                  title="Protein"
+                  description={formatMacro(formData.proteinGoal, "g")}
+                  left={props => <List.Icon {...props} icon="food-drumstick" />}
+                />
+                <List.Item
+                  title="Carbs"
+                  description={formatMacro(formData.carbGoal, "g")}
+                  left={props => <List.Icon {...props} icon="food-apple" />}
+                />
+                <List.Item
+                  title="Fats"
+                  description={formatMacro(formData.fatGoal, "g")}
+                  left={props => <List.Icon {...props} icon="cheese" />}
+                />
+              </List.Section>
+            </View>
+          )
+        }
         return (
           <View key={key} style={{ marginBottom: 8 }}>
             <Text style={styles.fieldLabel}>{field.label}</Text>
             <TextInput
               mode="outlined"
+              keyboardType={field.inputType === "number" ? "numeric" : "default"}
               outlineColor={errors[field.name] ? "red" : "#ccc"}
               activeOutlineColor={AppColors.headerGreen}
               theme={{ roundness: 8 }}
@@ -122,7 +199,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
               onChangeText={(text) => {
                 SetFormData((prev) => ({
                   ...prev,
-                  [field.name]: field.type === "number" ? (text === "" ? "" : Number(text)) : text,
+                  [field.name]: text,
                 }));
                 if (text) {
                   setErrors((prev) => ({ ...prev, [field.name]: false }));
