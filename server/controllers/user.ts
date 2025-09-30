@@ -1,9 +1,7 @@
 import pkg from 'express';
 import userSchema from '../models/userSchema.ts';
 import bcrypt from 'bcrypt';
-
-// need to create JWT token when they createUser 
-// create a helper function that creates a JWT Token so its reusable
+import { generateJWT } from "../config/serverHelpers/generateJWTToken.ts"
 
 const createUser = async (req: pkg.Request, res: pkg.Response) => {
     try {
@@ -33,7 +31,9 @@ const createUser = async (req: pkg.Request, res: pkg.Response) => {
             }
         });
 
-        res.status(201).json({ message: "User created successfully" });
+        const token = generateJWT({id: newUser._id, username: newUser.username})
+
+        res.status(201).json({ message: "User created successfully", token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
