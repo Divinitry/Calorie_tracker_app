@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import NavBar from "../components/NavBar.tsx"
-import HomeDashboard from "../components/HomeDashboard.tsx"
-import AppBar from '../components/AppBar.tsx';
+import NavBar from "../components/home_page/NavBar.tsx";
+import HomeDashboard from "../components/home_page/HomeDashboard.tsx"
+import AppBar from '../components/home_page/AppBar.tsx';
 import { AppColors } from "../theme/AppColors.ts";
 import { ScrollView } from 'react-native';
 

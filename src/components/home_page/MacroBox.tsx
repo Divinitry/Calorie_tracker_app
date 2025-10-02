@@ -1,6 +1,6 @@
 import { Card, ProgressBar } from "react-native-paper"
 import { View, Text, StyleSheet } from "react-native"
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 
 interface macroInfoProps {
     macro: {

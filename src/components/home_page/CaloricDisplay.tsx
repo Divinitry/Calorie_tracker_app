@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native"
 import AddFoodButton from "./AddFoodButton"
-import addCommas from "../../helpers/addCommas"
+import addCommas from "../../../helpers/addCommas"
 
 interface calorieInfoProps {
     calorieInfo: {

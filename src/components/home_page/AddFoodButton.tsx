@@ -1,6 +1,6 @@
 import { View } from "react-native"
 import { Button } from "react-native-paper"
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 import { FontAwesome5 } from "@expo/vector-icons"
 
 const AddFoodButton = () => {

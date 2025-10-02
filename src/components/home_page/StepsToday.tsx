@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native"
 import { Card } from "react-native-paper"
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 import { FontAwesome5 } from "@expo/vector-icons"
-import addCommas from "../../helpers/addCommas"
+import addCommas from "../../../helpers/addCommas"
 import { ProgressBar } from "react-native-paper"
 
 const StepsToday = () => {

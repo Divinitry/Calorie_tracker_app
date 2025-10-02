@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native"
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 
 import MacroBox from "./MacroBox"
 

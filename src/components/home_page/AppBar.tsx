@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context"
 import { Appbar } from "react-native-paper"
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 import { FontAwesome5 } from "@expo/vector-icons"
 import { View, Text } from "react-native"
 

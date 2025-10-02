@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { Text, StyleSheet, View } from "react-native"
 import { AnimatedCircularProgress } from 'react-native-circular-progress'
 import { Card } from 'react-native-paper'
-import { AppColors } from "../theme/AppColors"
+import { AppColors } from "../../theme/AppColors"
 import { FontAwesome5 } from "@expo/vector-icons"
 import CaloricDisplay from "./CaloricDisplay"
 
