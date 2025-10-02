@@ -2,15 +2,18 @@ import pkg from 'express';
 import userSchema from '../models/userSchema.ts';
 import bcrypt from 'bcrypt';
 import { generateJWT } from "../config/serverHelpers/generateJWTToken.ts"
+import sendRecoveryHash from "../config/serverHelpers/nodeMailerTransport.ts"
+import generateRecoveryCode from '../config/serverHelpers/generateRecoveryCode.ts';
 
 const createUser = async (req: pkg.Request, res: pkg.Response) => {
     try {
-        const { username, password, age, heightInCm, currentWeightLbs, caloriesGoal, proteinGoal, fatGoal, carbGoal, stepGoal } = req.body;
+        const { username, email, password, age, heightInCm, currentWeightLbs, caloriesGoal, proteinGoal, fatGoal, carbGoal, stepGoal } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await userSchema.create({
             username,
+            email,
             password: hashedPassword,
             age,
             stats: {
@@ -31,7 +34,7 @@ const createUser = async (req: pkg.Request, res: pkg.Response) => {
             }
         });
 
-        const token = generateJWT({id: newUser._id, username: newUser.username})
+        const token = generateJWT({ id: newUser._id, username: newUser.username })
 
         res.status(201).json({ message: "User created successfully", token });
     } catch (error) {
@@ -43,16 +46,49 @@ const createUser = async (req: pkg.Request, res: pkg.Response) => {
 const checkUsernameAvailability = async (req: pkg.Request, res: pkg.Response) => {
     const createdUsername = req.params["username"]
     try {
-        const userExists = await userSchema.find({username: createdUsername})
+        const userExists = await userSchema.find({ username: createdUsername })
 
-        if(userExists.length > 0){
-            res.status(200).json({available: false})
-        } else{
-            res.status(200).json({available: true})
+        if (userExists.length > 0) {
+            res.status(200).json({ available: false })
+        } else {
+            res.status(200).json({ available: true })
         }
     } catch (error) {
         res.status(500).json({ error: "Internal server error" })
     }
 }
 
-export { createUser, checkUsernameAvailability } 
+const requestReset = async (req: pkg.Request, res: pkg.Response) => {
+    const email = req.params["email"];
+
+    const emailExists = await userSchema.findOne({ email });
+    if (!emailExists) {
+        return res.status(404).json({ message: "User not found" });
+    }
+
+    const code = generateRecoveryCode();
+    const info = {
+        userEmail: email,
+        code,
+    };
+
+    await userSchema.updateOne(
+        { email },
+        {
+            $set: {
+                recoveryCode: bcrypt.hashSync(code, 10),
+                recoveryCodeExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
+            },
+        }
+    );
+
+    await sendRecoveryHash(info);
+
+    return res.json({ message: "Recovery email sent" });
+};
+
+const confirmReset = () => {
+
+}
+
+export { createUser, checkUsernameAvailability, requestReset, confirmReset } 

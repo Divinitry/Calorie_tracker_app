@@ -44,9 +44,11 @@ const LoginOrSignup = () => {
                 style={styles.input}
             />
 
-            <TouchableOpacity onPress={() => { }}>
-                <Text style={styles.forgotText}>Forgot Password?</Text>
-            </TouchableOpacity>
+            <View style={{marginBottom: 20}}>
+                <Link href="/login_signup/forgotpassword">
+                    <Text style={styles.forgotText}>Forgot Password?</Text>
+                </Link>
+            </View>
 
             <Button
                 mode="contained"
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: "#fff",
         justifyContent: "center",
-        alignItems: "center", 
+        alignItems: "center",
     },
     title: {
         fontSize: 40,

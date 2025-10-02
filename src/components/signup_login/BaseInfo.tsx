@@ -1,14 +1,14 @@
 import { useState } from "react"
 import { View, StyleSheet, ScrollView, Dimensions } from "react-native"
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Button, Appbar } from "react-native-paper"
 import { AppColors } from "../../theme/AppColors"
 import { signupSteps } from "../../../helpers/signupSteps.ts"
 import { SafeAreaView } from "react-native-safe-area-context";
 import { validatePassword } from '../../../helpers/validatePassword.ts'
 import { DB_BASE_URL } from "../../../helpers/constants.ts"
-import InfoForm from "./InfoForm.tsx"
 import { saveKey } from "../../../helpers/secureStorage.ts"
+import InfoForm from "./InfoForm.tsx"
 
 const { width: screenWidth } = Dimensions.get("window")
 const colors = AppColors
@@ -18,7 +18,6 @@ const BaseInfo = () => {
     const [formData, SetFormData] = useState<{ [key: string]: any }>({ age: 25, heightInCm: 170, currentWeightLbs: 150 })
     const [errors, setErrors] = useState<{ [key: string]: string[] }>({})
     const navigation = useNavigation();
-    const route = useRoute();
 
     const steps = signupSteps.length
     const currentSignUpStep = signupSteps[currentAmount]
@@ -49,6 +48,17 @@ const BaseInfo = () => {
                     const passwordErrors = validatePassword(formData[passwordField.name] || "");
                     if (passwordErrors.length > 0) {
                         newErrors[passwordField.name] = passwordErrors;
+                        hasError = true;
+                    }
+                }
+
+                const confirmPasswordField = currentSignUpStep.fields.find(f => f.name === "confirmPassword");
+                if (passwordField && confirmPasswordField) {
+                    const passwordValue = formData[passwordField.name];
+                    const confirmValue = formData[confirmPasswordField.name];
+
+                    if (passwordValue && confirmValue && passwordValue !== confirmValue) {
+                        newErrors[confirmPasswordField.name] = ["Passwords do not match"];
                         hasError = true;
                     }
                 }
@@ -116,16 +126,16 @@ const BaseInfo = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Appbar.Header style={styles.header} statusBarHeight={20}>
-            <Appbar.BackAction
-                onPress={() => {
-                    if (currentAmount === 0) {
-                        navigation.goBack();
-                    } else {
-                        stepHandler("prev");
-                    }
-                }}
-                disabled={false}
-            />
+                <Appbar.BackAction
+                    onPress={() => {
+                        if (currentAmount === 0) {
+                            navigation.goBack();
+                        } else {
+                            stepHandler("prev");
+                        }
+                    }}
+                    disabled={false}
+                />
 
                 <View style={styles.chipWrapper}>
                     {Array.from({ length: steps }).map((_, i) => (

@@ -15,7 +15,7 @@ import { Picker } from '@react-native-picker/picker';
 interface Field {
   name: string;
   label: string;
-  type: "text" | "password" | "number" | "review";
+  type: "text" | "password" | "number" | "review" | "email";
   picker?: boolean;
   pickerOptions?: string[];
   icon?: string;
@@ -46,7 +46,8 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
   const [modalVisible, setModalVisible] = useState(false);
   const [currentPicker, setCurrentPicker] = useState<Field | null>(null);
   const [tempValue, setTempValue] = useState<number | undefined>(undefined);
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
+  const [showReviewPassword, setShowReviewPassword] = useState(false);
 
   const openPicker = (field: Field) => {
     setCurrentPicker(field);
@@ -70,6 +71,8 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
     if (!value) return "Not set";
     return unit ? `${value} ${unit}` : String(value);
   };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return (
     <View>
@@ -130,12 +133,12 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
                 />
                 <List.Item
                   title="Password"
-                  description={showPassword ? formData.password : "••••••••"}
-                  left={props => <List.Icon {...props} icon="lock" />}
+                  description={showReviewPassword ? formData.password : "••••••••"}
+                  left={(props) => <List.Icon {...props} icon="lock" />}
                   right={() => (
                     <IconButton
-                      icon={showPassword ? "eye-off" : "eye"}
-                      onPress={() => setShowPassword(!showPassword)}
+                      icon={showReviewPassword ? "eye-off" : "eye"}
+                      onPress={() => setShowReviewPassword((prev) => !prev)}
                     />
                   )}
                 />
@@ -197,6 +200,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
               activeOutlineColor={AppColors.headerGreen}
               theme={{ roundness: 8 }}
               value={String(value)}
+              textContentType={'oneTimeCode'}
               onChangeText={(text) => {
                 SetFormData((prev) => ({
                   ...prev,
@@ -209,12 +213,34 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
                     [field.name]: [],
                   }));
                 }
+
+                if (field.type === "email") {
+                  if (!emailRegex.test(text)) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      [field.name]: ["Invalid email format"],
+                    }));
+                  }
+                }
               }}
-              secureTextEntry={secureTextEntry}
+              secureTextEntry={field.type === "password" && !showPassword[field.name]}
               returnKeyType="done"
               placeholder={field.placeholder}
               placeholderTextColor="#888"
               style={[styles.input, { fontSize: 16, height: 45 }]}
+              right={
+                field.type === "password" ? (
+                  <TextInput.Icon
+                    icon={showPassword[field.name] ? "eye-off" : "eye"}
+                    onPress={() =>
+                      setShowPassword((prev) => ({
+                        ...prev,
+                        [field.name]: !prev[field.name],
+                      }))
+                    }
+                  />
+                ) : null
+              }
             />
             {errors[field.name]?.map((err, i) => (
               <Text key={i} style={{ color: "red", marginTop: 2 }}>{err}</Text>
@@ -266,8 +292,6 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
     </View>
   );
 };
-
-const colors = AppColors;
 
 const styles = StyleSheet.create({
   title: {

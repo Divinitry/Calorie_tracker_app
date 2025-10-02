@@ -4,7 +4,8 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
     username: {type: String, required: true, unique: true},
-    password: {type: String, required: true}, // hash password
+    password: {type: String, required: true},
+    email: {type: String, required: true, unique: true, lowercase: true, trim: true},
 
     age: {
         type: Number,
@@ -31,7 +32,8 @@ const userSchema = new Schema({
     },
 
     recipes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Recipe' }],
-    dailyFoodLog: [foodLogSchema]
+    dailyFoodLog: [foodLogSchema],
+    recoveryCode: { String }
     
 }, { timestamps: true, collection: "users"})
 
