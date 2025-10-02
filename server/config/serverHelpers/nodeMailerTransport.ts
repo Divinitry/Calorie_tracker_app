@@ -1,7 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import nodemailer from "nodemailer";
 import "dotenv/config";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const htmlTemplate = fs.readFileSync(
   path.resolve(__dirname, "password-recovery.html"),
@@ -9,12 +13,13 @@ const htmlTemplate = fs.readFileSync(
 );
 
 const transporter = nodemailer.createTransport({
+  service: "gmail",
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
   auth: {
     user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APPPASS,
+    pass: process.env.GMAIL_APPPASS
   },
 });
 

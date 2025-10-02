@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -48,6 +48,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
   const [tempValue, setTempValue] = useState<number | undefined>(undefined);
   const [showPassword, setShowPassword] = useState<{ [key: string]: boolean }>({});
   const [showReviewPassword, setShowReviewPassword] = useState(false);
+  const [touchedFields, setTouchedFields] = useState<{ [key: string]: boolean }>({});
 
   const openPicker = (field: Field) => {
     setCurrentPicker(field);
@@ -70,6 +71,41 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
   const formatMacro = (value?: string | number, unit?: string) => {
     if (!value) return "Not set";
     return unit ? `${value} ${unit}` : String(value);
+  };
+
+  useEffect(() => {
+    const newErrors: { [key: string]: string[] } = {};
+
+    currentSignUpStep.fields.forEach((field) => {
+      const value = formData[field.name];
+      if (touchedFields[field.name]) {
+        if (field.required && !value) {
+          newErrors[field.name] = ["This field is required"];
+        }
+
+        if (field.type === "email" && value) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(value)) {
+            newErrors[field.name] = ["Invalid email format"];
+          }
+        }
+
+        if (field.type === "password" && value) {
+          const pwErrors: string[] = [];
+          if (value.length < 8) pwErrors.push("At least 8 characters");
+          if (!/[A-Z]/.test(value)) pwErrors.push("Must include uppercase letter");
+          if (!/[0-9]/.test(value)) pwErrors.push("Must include a number");
+          if (pwErrors.length > 0) newErrors[field.name] = pwErrors;
+        }
+      }
+    });
+
+    setErrors(newErrors);
+  }, [formData, touchedFields, currentSignUpStep.fields, setErrors]);
+
+  const handleChange = (fieldName: string, text: string) => {
+    SetFormData(prev => ({ ...prev, [fieldName]: text }));
+    setTouchedFields(prev => ({ ...prev, [fieldName]: true }));
   };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -201,28 +237,7 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
               theme={{ roundness: 8 }}
               value={String(value)}
               textContentType={'oneTimeCode'}
-              onChangeText={(text) => {
-                SetFormData((prev) => ({
-                  ...prev,
-                  [field.name]: text,
-                }));
-
-                if (errors[field.name]?.length) {
-                  setErrors((prev) => ({
-                    ...prev,
-                    [field.name]: [],
-                  }));
-                }
-
-                if (field.type === "email") {
-                  if (!emailRegex.test(text)) {
-                    setErrors((prev) => ({
-                      ...prev,
-                      [field.name]: ["Invalid email format"],
-                    }));
-                  }
-                }
-              }}
+              onChangeText={(text) => handleChange(field.name, text)}
               secureTextEntry={field.type === "password" && !showPassword[field.name]}
               returnKeyType="done"
               placeholder={field.placeholder}

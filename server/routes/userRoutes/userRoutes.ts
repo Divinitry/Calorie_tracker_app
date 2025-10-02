@@ -4,8 +4,8 @@ import { createUser, checkUsernameAvailability, requestReset, confirmReset } fro
 const router = Router();
 
 router.post('/createuser', createUser);
+router.post('/requestReset', requestReset)
+router.post('/confirmReset', confirmReset)
 router.get('/:username', checkUsernameAvailability)
-router.post('/:email/requestReset', requestReset)
-router.get('/:email/confirmReset', confirmReset)
 
 export default router;
