@@ -44,6 +44,29 @@ const createUser = async (req: pkg.Request, res: pkg.Response) => {
   }
 };
 
+const login = async (req: pkg.Request, res: pkg.Response) =>{
+  try {
+    const {email, enteredPassword} = req.body
+
+    const user = await userSchema.findOne({email: email})
+
+    if(!user){
+      return res.status(401).json({message: "Invalid credentials"})
+    }
+
+    const isMatch = await bcrypt.compare(enteredPassword, user.password);
+
+    if(!isMatch){
+      return res.status(401).json({message: "Invalid credentials"})
+    }
+
+    const token = generateJWT({ id: user._id, username: user.username })
+    return res.status(200).json({ message: "Login successful", token});
+  } catch (error) {
+    return res.status(404).json({message: "Internal server error"})
+  }
+}
+
 const checkUsernameAvailability = async (req: pkg.Request, res: pkg.Response) => {
   const createdUsername = req.params["username"]
   try {
@@ -112,4 +135,4 @@ const confirmReset = async (req: pkg.Request, res: pkg.Response) => {
   }
 };
 
-export { createUser, checkUsernameAvailability, requestReset, confirmReset } 
+export { createUser, login, checkUsernameAvailability, requestReset, confirmReset } 

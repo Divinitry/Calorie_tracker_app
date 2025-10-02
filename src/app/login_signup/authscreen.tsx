@@ -1,8 +1,8 @@
-import LoginOrSignup from "../../components/signup_login/LoginOrSignup"
+import LoginForm from "../../components/signup_login/LoginForm"
 
 const AuthScreen = () => {
     return(
-        <LoginOrSignup/>
+        <LoginForm/>
     )
 }
 

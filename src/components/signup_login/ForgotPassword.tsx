@@ -253,14 +253,49 @@ const ForgotPassword = () => {
 };
 
 const styles = StyleSheet.create({
-    safeArea: { flex: 1, backgroundColor: colors.backgroundOffWhite },
-    container: { flex: 1, justifyContent: "center", alignItems: "center", paddingHorizontal: 24 },
-    title: { fontSize: 32, fontWeight: "700", marginBottom: 8, textAlign: "center" },
-    subtitle: { fontSize: 16, color: "#555", marginBottom: 24, textAlign: "center", paddingHorizontal: 16 },
-    input: { width: screenWidth * 0.8, marginBottom: 16, backgroundColor: "#fff" },
-    resetButton: { width: screenWidth * 0.8, borderRadius: 10, backgroundColor: colors.headerGreen, marginBottom: 12 },
-    backButton: { flexDirection: "row", alignItems: "center", marginTop: 8 },
-    backButtonText: { fontSize: 16, color: "#535353ff" },
+    safeArea: {
+        flex: 1,
+        backgroundColor: colors.backgroundOffWhite
+    },
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 24
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: "700",
+        marginBottom: 8,
+        textAlign: "center"
+    },
+    subtitle: {
+        fontSize: 16,
+        color: "#555",
+        marginBottom: 24,
+        textAlign: "center",
+        paddingHorizontal: 16
+    },
+    input: {
+        width: screenWidth * 0.8,
+        marginBottom: 16,
+        backgroundColor: "#fff"
+    },
+    resetButton: {
+        width: screenWidth * 0.8,
+        borderRadius: 10,
+        backgroundColor: colors.headerGreen,
+        marginBottom: 12
+    },
+    backButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 8
+    },
+    backButtonText: {
+        fontSize: 16,
+        color: "#535353ff"
+    },
 });
 
 export default ForgotPassword;
