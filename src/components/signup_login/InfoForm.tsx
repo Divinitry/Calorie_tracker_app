@@ -168,6 +168,11 @@ const InfoForm = ({ currentSignUpStep, formData, SetFormData, errors, setErrors 
                   left={props => <List.Icon {...props} icon="account" />}
                 />
                 <List.Item
+                  title="Email"
+                  description={formData.email || "Not set"}
+                  left={props => <List.Icon {...props} icon="email" />}
+                />
+                <List.Item
                   title="Password"
                   description={showReviewPassword ? formData.password : "••••••••"}
                   left={(props) => <List.Icon {...props} icon="lock" />}
